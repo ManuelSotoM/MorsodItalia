@@ -17,41 +17,48 @@ namespace MorsodItalia.BL
             ListadeProductos = new List<Producto>();
         }
 
-      public  List<Producto> ObtenerProductos()
+        public List<Producto> ObtenerProductos()
         {
+            ListadeProductos =  _contexto.Productos
+                .Include("Categoria")
+                .ToList();
 
-            ListadeProductos = _contexto.Productos
-            .Include("Categoria")
-            .ToList();
-            return  ListadeProductos ;
+            return  ListadeProductos;
         }
+
         public void GuardarProducto(Producto producto)
         {
-            if (producto.Id == 0)
+            if(producto.Id == 0)
             {
                 _contexto.Productos.Add(producto);
-            }else
+            } else
             {
                 var productoExistente = _contexto.Productos.Find(producto.Id);
+
                 productoExistente.Descripcion = producto.Descripcion;
+                productoExistente.CategoriaId = producto.CategoriaId;
                 productoExistente.Precio = producto.Precio;
+                productoExistente.UrlImagen = producto.UrlImagen;
+                //productoExistente.Activo = producto.Activo;
             }
+            
             _contexto.SaveChanges();
         }
 
         public Producto ObtenerProducto(int id)
         {
-            var producto = _contexto.Productos.Find(id);
+            var producto = _contexto.Productos
+                .Include("Categoria").FirstOrDefault(p => p.Id == id);
+            
+            return producto;
+        }
 
-                return producto;
-            }
-        public void EliminarProducto (int id)
+        public void EliminarProducto(int id)
         {
             var producto = _contexto.Productos.Find(id);
 
             _contexto.Productos.Remove(producto);
             _contexto.SaveChanges();
         }
-      }
     }
-
+}

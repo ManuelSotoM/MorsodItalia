@@ -5,13 +5,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace QuieroPizza.WebAdmin.Controllers
+namespace MorsodItalia.WebAdmin.Controllers
 {
-   
     public class CategoriasController : Controller
     {
         CategoriasBL _categoriasBL;
-
         public CategoriasController()
         {
             _categoriasBL = new CategoriasBL();
@@ -35,19 +33,16 @@ namespace QuieroPizza.WebAdmin.Controllers
         [HttpPost]
         public ActionResult Crear(Categoria categoria)
         {
-            if (ModelState.IsValid)
-            {
+             if (ModelState.IsValid) {
                 if (categoria.Descripcion != categoria.Descripcion.Trim())
                 {
-                    ModelState.AddModelError("Descripcion", "La descripción no debe contener espacios al inicio o al final");
+                    ModelState.AddModelError("Descripcion", "la Descripción no debe contener espacios al incio o al final");
                     return View(categoria);
                 }
-
                 _categoriasBL.GuardarCategoria(categoria);
 
                 return RedirectToAction("Index");
             }
-
             return View(categoria);
         }
 
@@ -55,7 +50,7 @@ namespace QuieroPizza.WebAdmin.Controllers
         {
             var categoria = _categoriasBL.ObtenerCategoria(id);
 
-            return View(categoria);
+            return View (categoria);
         }
 
         [HttpPost]
@@ -65,15 +60,13 @@ namespace QuieroPizza.WebAdmin.Controllers
             {
                 if (categoria.Descripcion != categoria.Descripcion.Trim())
                 {
-                    ModelState.AddModelError("Descripcion", "La descripción no debe contener espacios al inicio o al final");
+                    ModelState.AddModelError("Descripcion", "la Descripción no debe contener espacios al incio o al final");
                     return View(categoria);
                 }
-
                 _categoriasBL.GuardarCategoria(categoria);
 
                 return RedirectToAction("Index");
             }
-
             return View(categoria);
         }
 
